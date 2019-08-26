@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using RestClient.Core.Models;
 using RestClient.Core.Singletons;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Networking;
  
 namespace RestClient.Core
 {
-    public class RestClient : Singleton<MonoBehaviour>
+    public class RestWebClient : Singleton<RestWebClient>
     {
         private const string defaultContentType = "application/json";
         public IEnumerator HttpGet(string url, System.Action<Response> callback)
@@ -56,11 +57,19 @@ namespace RestClient.Core
             }
         }
 
-        public IEnumerator HttpPost(string url, object body, System.Action<Response> callback)
+        public IEnumerator HttpPost(string url, object body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
             string jsonBody = JsonUtility.ToJson(body);
             using(UnityWebRequest webRequest = UnityWebRequest.Post(url, jsonBody))
             {
+                if(headers != null)
+                {
+                    foreach (RequestHeader header in headers)
+                    {
+                        webRequest.SetRequestHeader(header.Key, header.Value);
+                    }
+                }
+
                 webRequest.uploadHandler.contentType = defaultContentType;
                 webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonBody));
 
