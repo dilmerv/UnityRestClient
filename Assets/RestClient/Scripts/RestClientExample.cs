@@ -29,10 +29,6 @@ public class RestClientExample : MonoBehaviour
             Url = "https://github.com/dilmerv/AzureVisionAPI/blob/master/images/IMG_5301.JPG?raw=true"
         };
         
-        string jsonData = JsonUtility.ToJson(imageUrl);
-
-        Debug.Log(jsonData);
-
         // send a post request
         StartCoroutine(RestWebClient.Instance.HttpPost(baseUrl, JsonUtility.ToJson(imageUrl), (r) => OnRequestComplete(r), new List<RequestHeader> 
         {
