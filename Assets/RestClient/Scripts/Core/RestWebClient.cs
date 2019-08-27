@@ -57,10 +57,9 @@ namespace RestClient.Core
             }
         }
 
-        public IEnumerator HttpPost(string url, object body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
+        public IEnumerator HttpPost(string url, string body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
-            string jsonBody = JsonUtility.ToJson(body);
-            using(UnityWebRequest webRequest = UnityWebRequest.Post(url, jsonBody))
+            using(UnityWebRequest webRequest = UnityWebRequest.Post(url, body))
             {
                 if(headers != null)
                 {
@@ -71,7 +70,7 @@ namespace RestClient.Core
                 }
 
                 webRequest.uploadHandler.contentType = defaultContentType;
-                webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonBody));
+                webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(body));
 
                 yield return webRequest.SendWebRequest();
 
@@ -95,13 +94,20 @@ namespace RestClient.Core
             }
         }
 
-        public IEnumerator HttpPut(string url, object body, System.Action<Response> callback)
+        public IEnumerator HttpPut(string url, string body, System.Action<Response> callback, IEnumerable<RequestHeader> headers = null)
         {
-            string jsonBody = JsonUtility.ToJson(body);
-            using(UnityWebRequest webRequest = UnityWebRequest.Put(url, jsonBody))
+            using(UnityWebRequest webRequest = UnityWebRequest.Put(url, body))
             {
+                if(headers != null)
+                {
+                    foreach (RequestHeader header in headers)
+                    {
+                        webRequest.SetRequestHeader(header.Key, header.Value);
+                    }
+                }
+
                 webRequest.uploadHandler.contentType = defaultContentType;
-                webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonBody));
+                webRequest.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(body));
 
                 yield return webRequest.SendWebRequest();
 
