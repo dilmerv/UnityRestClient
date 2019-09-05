@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using RestClient.Core;
 using RestClient.Core.Models;
+using TMPro;
 using UnityEngine;
 
 public class RestClientExample : MonoBehaviour
@@ -19,6 +20,12 @@ public class RestClientExample : MonoBehaviour
     [SerializeField]
     private string imageToOCR = "";
 
+    [SerializeField]
+    private TextMeshProUGUI header;
+
+    [SerializeField]
+    private TextMeshProUGUI wordsCapture;
+    
     void Start()
     {
         // setup the request header
@@ -56,6 +63,26 @@ public class RestClientExample : MonoBehaviour
         Debug.Log($"Status Code: {response.StatusCode}");
         Debug.Log($"Data: {response.Data}");
         Debug.Log($"Error: {response.Error}");
+        
+        if(string.IsNullOrEmpty(response.Error) && !string.IsNullOrEmpty(response.Data))
+        {
+            AzureOCRResponse azureOCRResponse = JsonUtility.FromJson<AzureOCRResponse>(response.Data);
+
+            header.text = $"Orientation: {azureOCRResponse.orientation} Language: {azureOCRResponse.language} Text Angle: {azureOCRResponse.textAngle}";
+
+            string words = string.Empty;
+            foreach (var region in azureOCRResponse.regions)
+            {
+                foreach (var line in region.lines)
+                {
+                    foreach (var word in line.words)
+                    { 
+                        words += word.text + "\n";
+                    }
+                }
+            } 
+            wordsCapture.text = words;
+        }
     }
 
     public class ImageUrl 
