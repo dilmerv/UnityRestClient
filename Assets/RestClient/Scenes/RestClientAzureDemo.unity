@@ -150,9 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3561c01ded474249ba91baee96d76a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUrl: https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/ocr?language=unk&detectOrientation=true
+  baseUrl: https://unitycomputervisionf0.cognitiveservices.azure.com/vision/v2.0/ocr?language=unk&detectOrientation=true
   clientId: Ocp-Apim-Subscription-Key
-  clientSecret: 89d948b1d05b40e59fd09eacdc99f57c
+  clientSecret: 563683642672470c865d56cf04e10947
 --- !u!114 &557689521
 MonoBehaviour:
   m_ObjectHideFlags: 0

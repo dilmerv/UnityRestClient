@@ -16,23 +16,38 @@ public class RestClientExample : MonoBehaviour
     [SerializeField]
     private string clientSecret;
 
+    [SerializeField]
+    private string imageToOCR = "";
+
     void Start()
     {
         // setup the request header
-        RequestHeader clientHeader = new RequestHeader {
+        RequestHeader clientSecurityHeader = new RequestHeader {
             Key = clientId,
             Value = clientSecret
         };
-        
-        // build image url required by Azure Vision OCR
-        ImageUrl imageUrl = new ImageUrl {
-            Url = "https://github.com/dilmerv/AzureVisionAPI/blob/master/images/IMG_5301.JPG?raw=true"
+
+        // setup the request header
+        RequestHeader contentTypeHeader = new RequestHeader {
+            Key = "Content-Type",
+            Value = "application/json"
         };
+        
+        // validation
+        if(string.IsNullOrEmpty(imageToOCR))
+        {
+            Debug.LogError("imageToOCR needs to be set through the inspector...");
+            return;
+        }
+
+        // build image url required by Azure Vision OCR
+        ImageUrl imageUrl = new ImageUrl { Url = imageToOCR };
         
         // send a post request
         StartCoroutine(RestWebClient.Instance.HttpPost(baseUrl, JsonUtility.ToJson(imageUrl), (r) => OnRequestComplete(r), new List<RequestHeader> 
         {
-            clientHeader
+            clientSecurityHeader,
+            contentTypeHeader
         }));
     }
 
