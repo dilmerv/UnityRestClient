@@ -6,15 +6,15 @@ using UnityEngine;
 public class RestClientGetAndPostExample : MonoBehaviour
 {
     [SerializeField]
-    private string baseUrl = "http://localhost:5000/";
+    private string baseUrl = "https://localhost:5000";
 
     void Start()
     {
         // send a get request
-        StartCoroutine(RestWebClient.Instance.HttpGet($"{baseUrl}api/values", (r) => OnRequestComplete(r)));
+        StartCoroutine(RestWebClient.Instance.HttpGet($"{baseUrl}", (r) => OnRequestComplete(r)));
 
         // setup the request header
-        RequestHeader header = new RequestHeader {
+         RequestHeader header = new RequestHeader {
             Key = "Content-Type",
             Value = "application/json"
         };

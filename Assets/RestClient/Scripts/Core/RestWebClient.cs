@@ -15,7 +15,7 @@ namespace RestClient.Core
             using(UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
                 yield return webRequest.SendWebRequest();
-
+                
                 if(webRequest.isNetworkError){
                     callback(new Response {
                         StatusCode = webRequest.responseCode,
@@ -26,6 +26,7 @@ namespace RestClient.Core
                 if(webRequest.isDone)
                 {
                     string data = System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data);
+                    Debug.Log("Data: " + data);
                     callback(new Response {
                         StatusCode = webRequest.responseCode,
                         Error = webRequest.error,
@@ -123,6 +124,31 @@ namespace RestClient.Core
                 {
                     callback(new Response {
                         StatusCode = webRequest.responseCode,
+                    });
+                }
+            }
+        }
+
+        public IEnumerator HttpHead(string url, System.Action<Response> callback)
+        {
+            using(UnityWebRequest webRequest = UnityWebRequest.Head(url))
+            {
+                yield return webRequest.SendWebRequest();
+                
+                if(webRequest.isNetworkError){
+                    callback(new Response {
+                        StatusCode = webRequest.responseCode,
+                        Error = webRequest.error,
+                    });
+                }
+                
+                if(webRequest.isDone)
+                {
+                    var responseHeaders = webRequest.GetResponseHeaders();
+                    callback(new Response {
+                        StatusCode = webRequest.responseCode,
+                        Error = webRequest.error,
+                        Headers = responseHeaders
                     });
                 }
             }
