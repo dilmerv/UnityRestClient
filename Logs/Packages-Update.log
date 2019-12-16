@@ -16,3 +16,12 @@ The following packages were updated:
   com.unity.collab-proxy from version 1.2.9 to 1.2.16
   com.unity.textmeshpro from version 2.0.0 to 2.0.1
   com.unity.timeline from version 0.0.0-builtin to 1.1.0
+
+=== Mon Dec 16 09:58:38 2019
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 1.0.8 to 1.1.0
+  com.unity.ide.vscode from version 1.0.7 to 1.1.3

@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 namespace RestClient.Core.Models
 {
     public class Response
@@ -7,6 +9,8 @@ namespace RestClient.Core.Models
 
         public string Error { get;set; }
 
-        public string Data { get; set; }   
+        public string Data { get; set; }  
+
+        public Dictionary<string, string> Headers {get; set;} 
     }
 }
